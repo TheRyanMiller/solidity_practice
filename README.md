@@ -1,1 +1,0 @@
-# solidity_practice1
