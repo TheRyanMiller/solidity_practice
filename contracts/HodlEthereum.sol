@@ -1,11 +1,13 @@
 pragma solidity ^0.4.11;
 
 contract HodlEthereum {
+
     event Hodl(address indexed hodler, uint indexed amount);
     event Release(address indexed hodler, uint indexed amount);
+
     mapping (address => uint) public hodlers;
-    uint constant targetTime = 8; // block num
-    uint constant targetBlock = 8;
+    //uint constant targetTime = 8; // block num
+    uint constant targetBlock = 2;
 
     function deposit() public payable {
         hodlers[msg.sender] += msg.value;
@@ -13,7 +15,7 @@ contract HodlEthereum {
     }
 
     function release() public{
-        require (10 >= targetBlock && hodlers[msg.sender] > 0);
+        require (block.number >= targetBlock && hodlers[msg.sender] > 0);
         uint value = hodlers[msg.sender];
         hodlers[msg.sender] = 0;
         msg.sender.transfer(value);
@@ -24,4 +26,5 @@ contract HodlEthereum {
       uint balance = hodlers[hodler];
       return balance;
     }
+
 }
