@@ -11,8 +11,8 @@ module.exports = function(deployer) {
   //deployer.link(ConvertLib, MetaCoin);
   //deployer.deploy(MetaCoin);
   //deployer.deploy(Voting, 1000, web3.toWei('0.1', 'ether'), ['Ryan Miller', 'Donald Trump', 'Hillary Clinton', 'Vitalik Buterin']);
-  //deployer.deploy(HodlEthereum);
-  deployer.deploy(Callee);
+  deployer.deploy(HodlEthereum);
+  //deployer.deploy(Callee);
   //deployer.deploy(CalleeInterface);
-  deployer.deploy(Caller);
+  //deployer.deploy(Caller);
 };

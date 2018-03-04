@@ -1,4 +1,4 @@
-pragma solidity ^0.4.11;
+pragma solidity ^0.4.19;
 
 contract HodlEthereum {
 
@@ -23,8 +23,6 @@ contract HodlEthereum {
     }
 
     function getBalance(address hodler) public view returns (uint){
-      uint balance = hodlers[hodler];
-      return balance;
+      return hodlers[hodler];
     }
-
 }

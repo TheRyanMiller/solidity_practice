@@ -16,16 +16,18 @@ hodlEthereum.setProvider(web3.currentProvider);
 SCRIPTS BELOW
 ---------------------------------------------------------------------*/
 
-var acct ="0xfb1bd2c12ef2f6eee6c547cc115d9afa1c70b9c7";
-var contractAddress = "0x008baac49284b22ee8fc6504b256e00256fea7f8";
+var acct ="0xc2f1125c4345ad9c8b5e7974d612b149c7f3d06e";
+var contractAddress = "0xc283151f28f1f8459c1b8065bd47d083e69e6319";
 
 //DEPOSIT
-
+/*
 hodlEthereum.deployed().then(function(contractInstance) {
-  contractInstance.deposit({value:web3.toWei(72, "ether"), from:acct, gas:2000000}).then(function(v) {
+  contractInstance.deposit({value:web3.toWei(20, "ether"), from:acct, gas:2000000}).then(function(v) {
     console.log(v);
   });
 })
+*/
+
 /*
 hodlEthereum.deployed().then(function(contractInstance){
   console.log(contractInstance);
@@ -44,11 +46,11 @@ hodlEthereum.deployed().then(function(contractInstance) {
 */
 
 //Release
-/*
+
 hodlEthereum.deployed().then(function(contractInstance) {
   contractInstance.release({from:acct, gas:2000000}).then(function(v) {
     console.log(v)
   });
 })
-*/
+
 //npm run dev

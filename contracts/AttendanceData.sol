@@ -21,7 +21,7 @@ contract AttendanceData {
   uint eventId; //start at 0, iterate up for each event
   mapping(address => Attendee) public attendees;
   address[] public attendeeList;
-  mapping(address => uint) private winningsBalance; //map addresses to their winnings balance
+  mapping(address => uint) public winningsBalance; //map addresses to their winnings balance
   address[] public eventResults; //track winners of each event
   uint public unclaimedValue; //total unclaimed value in the contract (available only to winners)
   uint public currentEventValue; //value of current meetup
@@ -80,8 +80,8 @@ contract AttendanceData {
     */
     address attendeeAddress = msg.sender;
     uint amountDonated = msg.value;
-    if(isAttendee(attendeeAddress)) throw;
-    if(amountDonated<=0) throw;
+    require (isAttendee(attendeeAddress) == false);
+    require (amountDonated>0);
     if(hasPastAttendeeRecord(attendeeAddress)){
       updateAttendee(attendeeAddress, name, amountDonated);
       attendees[attendeeAddress].listPointer = attendeeList.push(attendeeAddress) - 1;
@@ -102,7 +102,7 @@ contract AttendanceData {
   }
 
   function updateAttendee(address attendeeAddress, string name, uint amountDonated) private returns(bool success) {
-    if(!isAttendee(attendeeAddress)) throw;
+    require (isAttendee(attendeeAddress));
     attendees[attendeeAddress].name = name;
     attendees[attendeeAddress].lastAttendedEvent = eventId;
     attendees[attendeeAddress].amountDonated = amountDonated;
@@ -112,23 +112,23 @@ contract AttendanceData {
   }
 
   function updateAttendeeName(address attendeeAddress, string name) public returns(bool success) {
-    if(!isAttendee(attendeeAddress)) throw;
+    require (isAttendee(attendeeAddress));
     attendees[attendeeAddress].name = name;
     return true;
   }
 
   function validateAttendee(address attendeeAddress) public returns(bool success) {
-    if(attendeeAddress==msg.sender) throw; //prevent self-confimration
-    if(!isAttendee(attendeeAddress)) throw; //Make sure that validatee is an attendee
-    if(!isAttendee(msg.sender)) throw;//Make sure that validator is an attendee too
-    if(hasAlreadyValidated(attendeeAddress, msg.sender)) throw; // check if already validated before
+    require (attendeeAddress!=msg.sender); //prevent self-confimration
+    require (isAttendee(attendeeAddress)); //Make sure that validatee is an attendee
+    require (isAttendee(msg.sender)); //Make sure that validator is an attendee too
+    require (hasAlreadyValidated(attendeeAddress, msg.sender) == false); // check if already validated before
     attendees[attendeeAddress].validators[msg.sender].hasAlreadyValidated = true;
     attendees[attendeeAddress].validators[msg.sender].listPointer = attendees[attendeeAddress].validatorList.push(msg.sender) - 1;
     return true;
   }
 
   function deleteAttendee(address attendeeAddress) public returns(bool success) {
-    if(!isAttendee(attendeeAddress)) throw;
+    require (isAttendee(attendeeAddress));
     uint rowToDelete = attendees[attendeeAddress].listPointer; // array index of specified address
     address keyToMove = attendeeList[attendeeList.length-1]; // address at last position
     attendeeList[rowToDelete] = keyToMove; //set address of deleted index, to address of last index
@@ -156,8 +156,8 @@ contract AttendanceData {
 
   function collectWinnings() public returns(bool success){
     //Can only be run by .payOut()
-    if(winningsBalance[msg.sender] > 0) throw;
-    msg.sender.transfer(winningsBalance[caller]);
+    require (winningsBalance[msg.sender] > 0);
+    msg.sender.transfer(winningsBalance[msg.sender]);
     return true;
   }
 
